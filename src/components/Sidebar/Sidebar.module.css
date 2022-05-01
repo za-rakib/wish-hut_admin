@@ -19,8 +19,10 @@
 .sidebarList {
   list-style: none;
   padding: 5px;
+  text-decoration: none;
 }
 .sidebarListItem {
+    text-decoration: none;
   padding: 5px;
   margin-top: 1px;
   cursor: pointer;

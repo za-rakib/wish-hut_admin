@@ -2,9 +2,9 @@ import React from "react";
 import classes from "./Home.module.css";
 import FeaturedInfo from "../../components/FeaturedInfo/FeaturedInfo";
 import Chart from "../../components/Chart/Chart";
-import { userData } from "../../assets/data/userData";
 import WidgetSm from "../../components/Widgets/WidgetSm/WidgetSm";
 import WidgetLg from "../../components/Widgets/WidgetLg/WidgetLg";
+import { userData } from "../../assets/data/dummyData";
 
 
 const Home = () => {
@@ -12,7 +12,7 @@ const Home = () => {
     <div className={classes.home}>
       <FeaturedInfo />
       <Chart
-        data={userData}
+        data={userData }
         title="User Analytics"
         grid
         dataKey="Active Users"
