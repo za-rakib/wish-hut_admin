@@ -52,10 +52,15 @@ const Sidebar = () => {
                 Users
               </li>
             </Link>
-            <li className={classes.sidebarListItem}>
-              <Storefront className={classes.sidebarIcon} />
-              Products
-            </li>
+            <Link
+              to="/products"
+              style={{ textDecoration: "none", color: "black" }}
+            >
+              <li className={classes.sidebarListItem}>
+                <Storefront className={classes.sidebarIcon} />
+                Products
+              </li>
+            </Link>
             <li className={classes.sidebarListItem}>
               <AttachMoney className={classes.sidebarIcon} />
               Transactions

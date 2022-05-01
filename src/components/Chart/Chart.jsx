@@ -11,7 +11,7 @@ import {
 } from "recharts";
 
 const Chart = ({ title, data, dataKey, grid }) => {
-    console.log(data);
+ //   console.log(data);
   return (
     <div className={classes.chart}>
       <h3 style={{ marginBottom: "20px" }}>{title}</h3>
