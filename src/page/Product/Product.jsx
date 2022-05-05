@@ -4,9 +4,15 @@ import "./Product.css";
 import { Publish } from "@material-ui/icons";
 import Chart from "../../components/Chart/Chart";
 import { productData } from "../../assets/data/dummyData";
+import TopBar from "../../components/Topbar/TopBar";
+import Sidebar from "../../components/Sidebar/Sidebar";
 
 export default function Product() {
   return (
+    <>
+    <TopBar/>
+    <div className="productMain">
+        <Sidebar/>
     <div className="product">
       <div className="productTitleContainer">
         <h1 className="productTitle">Product</h1>
@@ -80,5 +86,7 @@ export default function Product() {
         </form>
       </div>
     </div>
+    </div>
+    </>
   );
 }

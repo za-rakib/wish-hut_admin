@@ -1,7 +1,13 @@
+import Sidebar from "../../components/Sidebar/Sidebar";
+import TopBar from "../../components/Topbar/TopBar";
 import classes from "./NewUser.module.css";
 
 export default function NewUser() {
   return (
+    <>
+    <TopBar/>
+    <div className={classes.newUserMain}>
+        <Sidebar/>
     <div className={classes.newUser}>
       <h1 className={classes.newUserTitle}>New User</h1>
       <form className={classes.newUserForm}>
@@ -50,5 +56,7 @@ export default function NewUser() {
         <button className={classes.newUserButton}>Create</button>
       </form>
     </div>
+    </div>
+    </>
   );
 }

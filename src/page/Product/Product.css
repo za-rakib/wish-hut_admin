@@ -1,3 +1,7 @@
+.productMain{
+    display: flex;
+    flex-direction: wrap;
+}
 .product {
     flex: 4;
     padding: 20px;

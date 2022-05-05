@@ -1,3 +1,7 @@
+.productListMain{
+    display: flex;
+    flex-direction: wrap;
+}
 .productList{
     flex: 4;
 }

@@ -1,32 +1,85 @@
-import Sidebar from "./components/Sidebar/Sidebar";
-import TopBar from "./components/Topbar/TopBar";
 import "./app.css";
 import Home from "./page/Home/Home";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import UserList from "./page/UserList/UserList";
 import User from "./page/User/User";
 import NewUser from "./page/NewUser/NewUser";
 import ProductList from "./page/ProductList/ProductList";
 import Product from "./page/Product/Product";
 import NewProduct from "./page/NewProduct/NewProduct";
+import Login from "./page/Login/Login";
+import { useState, useEffect } from "react";
+
 
 function App() {
+  const [loginCh, setLoginCh] = useState(false);
+  const [admin, setAdmin] = useState(false);
+
+//   const user = useSelector((state) => state.user && state.user.currentUser.isAdmin);
+//   console.log("user" , user);
+
+  const tokenId = JSON.parse(localStorage.getItem(`persist:root`))?.user;
+
+  const isAdmin = tokenId && JSON.parse(tokenId).currentUser?.isAdmin;
+
+  useEffect(() => {
+    (async () => {
+      await setAdmin(isAdmin);
+    })();
+  }, [isAdmin, loginCh]);
+
+  //   console.log(localStorage.getItem("persist:root"));
+  //   console.log(isAdmin);
+
   return (
     <BrowserRouter>
-      <TopBar />
-      <div className="container">
-        <Sidebar />
-        <Routes>
-          <Route exact path="/" element={<Home />}></Route>
-          <Route path="home" element={<Home />}></Route>
-          <Route path="users" element={<UserList />}></Route>
-          <Route path="user/:userId" element={<User />}></Route>
-          <Route path="newUser" element={<NewUser />}></Route>
-          <Route path="products" element={<ProductList />}></Route>
-          <Route path="product/:productId" element={<Product />}></Route>
-          <Route path="newProduct" element={<NewProduct />}></Route>
-        </Routes>
-      </div>
+      <Routes>
+        <Route
+          exact
+          path="/"
+          element={admin ? <Home /> : <Navigate to="/login" />}
+        ></Route>
+        <Route
+          path="home"
+          element={admin ? <Home /> : <Navigate to="/login" />}
+        ></Route>
+
+        <Route
+          path="users"
+          element={admin ? <UserList /> : <Navigate to="/login" />}
+        ></Route>
+        <Route
+          path="user/:userId"
+          element={admin ? <User /> : <Navigate to="/login" />}
+        ></Route>
+        <Route
+          path="newUser"
+          element={admin ? <NewUser /> : <Navigate to="/login" />}
+        ></Route>
+        <Route
+          path="products"
+          element={admin ? <ProductList /> : <Navigate to="/login" />}
+        ></Route>
+        <Route
+          path="product/:productId"
+          element={admin ? <Product /> : <Navigate to="/login" />}
+        ></Route>
+        <Route
+          path="newProduct"
+          element={admin ? <NewProduct /> : <Navigate to="/login" />}
+        ></Route>
+
+        <Route
+          path="login"
+          element={
+            admin ? (
+              <Navigate to="/" />
+            ) : (
+              <Login setLoginCh={setLoginCh} loginCh={loginCh} />
+            )
+          }
+        />
+      </Routes>
     </BrowserRouter>
   );
 }

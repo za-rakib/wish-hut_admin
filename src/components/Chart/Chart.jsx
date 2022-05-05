@@ -10,7 +10,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const Chart = ({ title, data, dataKey, grid }) => {
+const Chart = ({ title, data,  xis, dataKey, grid }) => {
  //   console.log(data);
   return (
     <div className={classes.chart}>
@@ -18,7 +18,7 @@ const Chart = ({ title, data, dataKey, grid }) => {
       <ResponsiveContainer width="100%" aspect={4 / 1}>
         <LineChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey={dataKey} stroke="#5550bd" />
+          <XAxis dataKey={xis} stroke="#5550bd" />
           <YAxis />
           <Line type="monotone" dataKey={dataKey} stroke="#8884d8" />
           <Tooltip />

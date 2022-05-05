@@ -2,18 +2,29 @@ import "./ProductList.css";
 import { DataGrid } from "@material-ui/data-grid";
 import { DeleteOutline } from "@material-ui/icons";
 import { Link } from "react-router-dom";
-import { useState } from "react";
-import { productRows } from "../../assets/data/dummyData";
+import { useEffect } from "react";
+
+import TopBar from "../../components/Topbar/TopBar";
+import Sidebar from "../../components/Sidebar/Sidebar";
+import { useDispatch, useSelector } from "react-redux";
+import { deletedProduct, getProducts } from "../../redux/apiCalls";
 
 export default function ProductList() {
-  const [data, setData] = useState(productRows);
+  const dispatch = useDispatch();
+  const products = useSelector((state) => state.product.products);
+  //console.log(product);
+
+  useEffect(() => {
+    getProducts(dispatch);
+  }, [dispatch]);
 
   const handleDelete = (id) => {
-    setData(data.filter((item) => item.id !== id));
+    deletedProduct(id, dispatch);
+    // setData(data.filter((item) => item.id !== id));
   };
 
   const columns = [
-    { field: "id", headerName: "ID", width: 90 },
+    { field: "_id", headerName: "ID", width: 200 },
     {
       field: "product",
       headerName: "Product",
@@ -22,17 +33,12 @@ export default function ProductList() {
         return (
           <div className="productListItem">
             <img className="productListImg" src={params.row.img} alt="" />
-            {params.row.name}
+            {params.row.title}
           </div>
         );
       },
     },
-    { field: "stock", headerName: "Stock", width: 200 },
-    {
-      field: "status",
-      headerName: "Status",
-      width: 120,
-    },
+    { field: "inStock", headerName: "Stock", width: 200 },
     {
       field: "price",
       headerName: "Price",
@@ -43,14 +49,15 @@ export default function ProductList() {
       headerName: "Action",
       width: 150,
       renderCell: (params) => {
+        console.log(params.id);
         return (
           <>
-            <Link to={`/product/${params.row.id}`}>
+            <Link to={`/product/${params.id}`}>
               <button className="productListEdit">Edit</button>
             </Link>
             <DeleteOutline
               className="productListDelete"
-              onClick={() => handleDelete(params.row.id)}
+              onClick={() => handleDelete(params.id)}
             />
           </>
         );
@@ -59,14 +66,21 @@ export default function ProductList() {
   ];
 
   return (
-    <div className="productList">
-      <DataGrid
-        rows={data}
-        disableSelectionOnClick
-        columns={columns}
-        pageSize={8}
-        checkboxSelection
-      />
-    </div>
+    <>
+      <TopBar />
+      <div className="productListMain">
+        <Sidebar />
+        <div className="productList">
+          <DataGrid
+            rows={products}
+            disableSelectionOnClick
+            columns={columns}
+            pageSize={8}
+            getRowId={(row) => row._id}
+            checkboxSelection
+          />
+        </div>
+      </div>
+    </>
   );
 }

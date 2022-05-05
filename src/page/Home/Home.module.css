@@ -1,3 +1,7 @@
+.homeMain{
+display: flex;
+flex-direction: wrap;
+}
 .home{
     flex:4;
     margin-top:10px;

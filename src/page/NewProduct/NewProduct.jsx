@@ -1,8 +1,14 @@
+import Sidebar from "../../components/Sidebar/Sidebar";
+import TopBar from "../../components/Topbar/TopBar";
 import "./NewProduct.css";
 
 export default function NewProduct() {
   return (
-    <div className="newProduct">
+   <>
+   <TopBar/>
+   <div className="newProductMain">
+       <Sidebar/>
+   <div className="newProduct">
       <h1 className="addProductTitle">New Product</h1>
       <form className="addProductForm">
         <div className="addProductItem">
@@ -27,5 +33,7 @@ export default function NewProduct() {
         <button className="addProductButton">Create</button>
       </form>
     </div>
+   </div>
+   </>
   );
 }
