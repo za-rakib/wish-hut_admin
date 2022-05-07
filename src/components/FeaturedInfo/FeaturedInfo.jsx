@@ -11,7 +11,7 @@ const FeaturedInfo = () => {
     const getIncome = async () => {
       try {
         const res = await userRequest.get("/orders/income");
-        console.log(res);
+     //   console.log(res);
         setIncome(res && res.data);
         setPerc(
           ((res.data[1].total - res.data[0].total) / res.data[0].total) * 100

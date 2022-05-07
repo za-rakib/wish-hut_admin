@@ -15,18 +15,25 @@ import { useDispatch } from "react-redux";
 export default function NewProduct() {
   const [input, setInput] = useState({});
   const [file, setFile] = useState(null);
-  const [cat, setCat] = useState([]);
+  const [arrayInput, setArrayInput] = useState([]);
   const dispatch = useDispatch();
+
   const handleChange = (e) => {
     setInput((prev) => {
       return { ...prev, [e.target.name]: e.target.value };
     });
   };
 
-  const handleCategories = (e) => {
-    setCat(e.target.value.split(","));
+  const handleArrayInput = (e) => {
+    setArrayInput((prev) => {
+      return {
+        ...prev,
+        [e.target.name]: e.target.value.split(","),
+      };
+    });
+    // setCat(e.target.value.split(","));
   };
-  console.log(file);
+ // console.log(arrayInput);
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -52,11 +59,13 @@ export default function NewProduct() {
           default:
         }
       },
-      (error) => {},
+      (error) => {
+        console.log(error);
+      },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          const product = { ...input, img: downloadURL, categories: cat };
-          addProduct(product,dispatch);
+          const product = { ...input, ...arrayInput, img: downloadURL };
+          addProduct(product, dispatch);
         });
       }
     );
@@ -107,9 +116,28 @@ export default function NewProduct() {
             <div className="addProductItem">
               <label>Categories</label>
               <input
+                name="categories"
                 type="text"
                 placeholder="T-shirt, Bag"
-                onChange={handleCategories}
+                onChange={handleArrayInput}
+              />
+            </div>
+            <div className="addProductItem">
+              <label>Size</label>
+              <input
+                name="size"
+                type="text"
+                placeholder="S, M, L, XL"
+                onChange={handleArrayInput}
+              />
+            </div>
+            <div className="addProductItem">
+              <label>Color</label>
+              <input
+                name="color"
+                type="text"
+                placeholder=" Red, Blue, Green"
+                onChange={handleArrayInput}
               />
             </div>
             <div className="addProductItem">

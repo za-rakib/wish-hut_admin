@@ -13,7 +13,7 @@
 }
 
 .addProductItem {
-  width: 400px;
+  width: 350px;
   display: flex;
   flex-direction: column;
   margin-bottom: 10px;
@@ -36,9 +36,10 @@ margin-right: 20px;
 }
 
 .addProductButton {
-  margin-top: 10px;
   padding: 7px 10px;
   border: none;
+  height: 40px;
+  width: 100px;
   border-radius: 10px;
   background-color: darkblue;
   color: white;

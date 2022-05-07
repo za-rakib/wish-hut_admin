@@ -1,23 +1,33 @@
 import { Link, useParams } from "react-router-dom";
 import "./Product.css";
-
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
 import { Publish } from "@material-ui/icons";
 import Chart from "../../components/Chart/Chart";
-
+import { updatedProduct } from "../../redux/apiCalls";
 import TopBar from "../../components/Topbar/TopBar";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import { useSelector } from "react-redux";
 import { useEffect, useMemo, useState } from "react";
 import { userRequest } from "../../requestMethod";
+import { useDispatch } from "react-redux";
+import app from "../../firebase";
 
 export default function Product() {
   const productId = useParams().productId;
 
   const [pStats, setPStats] = useState([]);
+  const dispatch = useDispatch();
 
   const product = useSelector((state) =>
     state.product.products.find((product) => product._id === productId)
   );
+  const [input, setInput] = useState({product});
+  const [file, setFile] = useState(product.img);
 
   const MONTH = useMemo(
     () => [
@@ -40,7 +50,7 @@ export default function Product() {
     const getStats = async () => {
       try {
         const res = await userRequest.get(`/orders/income?pid=${productId}`);
-         // console.log("res",res);
+        // console.log("res",res);
         res.data.map((item) =>
           setPStats((prev) => [
             ...prev,
@@ -54,7 +64,54 @@ export default function Product() {
     };
     getStats();
   }, [MONTH, productId]);
- // console.log("pStats", pStats);
+  // console.log("pStats", pStats);
+
+  const handleChange = (e) => {
+    setInput((prev) => {
+      return { ...prev, [e.target.name]: e.target.value };
+    });
+  };
+
+  const handleClick = (e) => {
+    e.preventDefault();
+
+    const fileName = new Date().getTime() + file.name;
+    const storage = getStorage(app);
+    const storageRef = ref(storage, fileName);
+
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log("Upload is " + progress + "% done");
+        switch (snapshot.state) {
+          case "paused":
+            console.log("Upload is paused");
+            break;
+          case "running":
+            console.log("Upload is running");
+            break;
+          default:
+        }
+      },
+      (error) => {
+        console.log(error);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref)
+          .then((downloadURL) => {
+            const product = { ...input, img: downloadURL };
+            updatedProduct(product, productId, dispatch);
+          })
+      }
+    );
+  };
+  //   console.log(input);
+  //   console.log("file", file);
+
   return (
     <>
       <TopBar />
@@ -99,17 +156,33 @@ export default function Product() {
               </div>
             </div>
           </div>
+
           <div className="productBottom">
             <form className="productForm">
               <div className="productFormLeft">
                 <label>Product Name</label>
-                <input type="text" placeholder={product.title} />
+                <input
+                  name="title"
+                  type="text"
+                  placeholder={product.title}
+                  onChange={handleChange}
+                />
                 <label>Description</label>
-                <input type="text" placeholder={product.desc} />
+                <input
+                  name="desc"
+                  type="text"
+                  placeholder={product.desc}
+                  onChange={handleChange}
+                />
                 <label>Price</label>
-                <input type="text" placeholder={product.price} />
+                <input
+                  name="price"
+                  type="number"
+                  placeholder={product.price}
+                  onChange={handleChange}
+                />
                 <label>In Stock</label>
-                <select name="inStock" id="idStock">
+                <select name="inStock" id="idStock" onChange={handleChange}>
                   <option value="true">Yes</option>
                   <option value="false">No</option>
                 </select>
@@ -120,9 +193,16 @@ export default function Product() {
                   <label htmlFor="file">
                     <Publish />
                   </label>
-                  <input type="file" id="file" style={{ display: "none" }} />
+                  <input
+                    type="file"
+                    id="file"
+                    onChange={(e) => setFile(e?.target.files[0])}
+                    style={{ display: "none" }}
+                  />
                 </div>
-                <button className="productButton">Update</button>
+                <button onClick={handleClick} className="productButton">
+                  Update
+                </button>
               </div>
             </form>
           </div>
