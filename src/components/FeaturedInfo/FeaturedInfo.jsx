@@ -11,7 +11,8 @@ const FeaturedInfo = () => {
     const getIncome = async () => {
       try {
         const res = await userRequest.get("/orders/income");
-        setIncome(res.data);
+        console.log(res);
+        setIncome(res && res.data);
         setPerc(
           ((res.data[1].total - res.data[0].total) / res.data[0].total) * 100
         );
@@ -29,7 +30,7 @@ const FeaturedInfo = () => {
         <span className={classes.featuredTitle}>Revenue</span>
         <div className={classes.featuredMonyContainers}>
           <span className={classes.featuredMony}>
-            $ {income && income[1].total}
+            $ {income && income[1]?.total}
           </span>
           <span className={classes.featuredMonyRate}>
             % {Math.floor(perc)}

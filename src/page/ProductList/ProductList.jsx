@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import TopBar from "../../components/Topbar/TopBar";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import { useDispatch, useSelector } from "react-redux";
-import { deletedProduct, getProducts } from "../../redux/apiCalls";
+import { deleteProduct, getProducts } from "../../redux/apiCalls";
 
 export default function ProductList() {
   const dispatch = useDispatch();
@@ -19,7 +19,7 @@ export default function ProductList() {
   }, [dispatch]);
 
   const handleDelete = (id) => {
-    deletedProduct(id, dispatch);
+    deleteProduct(id, dispatch);
     // setData(data.filter((item) => item.id !== id));
   };
 
@@ -49,7 +49,7 @@ export default function ProductList() {
       headerName: "Action",
       width: 150,
       renderCell: (params) => {
-        console.log(params.id);
+       // console.log(params.id);
         return (
           <>
             <Link to={`/product/${params.id}`}>
