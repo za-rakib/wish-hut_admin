@@ -15,7 +15,7 @@ const Chart = ({ title, data,  xis, dataKey, grid }) => {
   return (
     <div className={classes.chart}>
       <h3 style={{ marginBottom: "20px" }}>{title}</h3>
-      <ResponsiveContainer width="100%" aspect={4 / 1}>
+      <ResponsiveContainer className={classes.responsiveContainer}  aspect={4 / 1}>
         <LineChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey={xis} stroke="#5550bd" />

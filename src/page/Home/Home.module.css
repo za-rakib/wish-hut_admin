@@ -1,12 +1,29 @@
-.homeMain{
-display: flex;
-flex-direction: wrap;
+.homeMain {
+  display: flex;
+  flex-direction: wrap;
 }
-.home{
-    flex:4;
-    margin-top:10px;
+.home {
+  flex: 4;
+  margin-top: 10px;
 }
-.homeWidgets{
-    display: flex;
-    margin: 20px;
+.homeWidgets {
+  display: flex;
+  margin: 20px;
 }
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  .home {
+    flex: 3;
+    margin-top: 10px;
+  }
+}
+/* @media only screen   
+and (min-width: 1030px)   
+and (max-width: 1366px)  
+{  .homeMain {
+    background-color: red;
+  }}  */
+/* @media only screen and (min-width: 992px) {
+  .homeMain {
+    background-color: red;
+  }
+} */

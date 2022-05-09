@@ -29,7 +29,7 @@ const UserList = () => {
     {
       field: "userName",
       headerName: "User Name",
-      width: 200,
+      width: 100,
       editable: true,
       renderCell: (params) => {
         return (
