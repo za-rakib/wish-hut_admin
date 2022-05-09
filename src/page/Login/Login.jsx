@@ -13,7 +13,6 @@ const Login = ({ setLoginCh, loginCh }) => {
  //   console.log(userName, password);
     login(dispatch, { userName, password });
     setLoginCh(!loginCh);
-
   };
   return (
     <div className={classes.login}>

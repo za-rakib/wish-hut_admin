@@ -1,20 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import classes from "./UserList.module.css";
 import { DataGrid } from "@material-ui/data-grid";
 import { DeleteOutline } from "@material-ui/icons";
-import { userRows } from "../../assets/data/dummyData";
 import { Link } from "react-router-dom";
 import TopBar from "../../components/Topbar/TopBar";
 import Sidebar from "../../components/Sidebar/Sidebar";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteUser, getUsers } from "../../redux/apiCalls";
 
 const UserList = () => {
-  const [data, setData] = useState(userRows);
+//   const [data, setData] = useState(userRows);
+  const dispatch = useDispatch();
 
   const handleDelete = (id) => {
-    setData(data.filter((user) => user.id !== id));
+      console.log("id",id);
+    deleteUser(id, dispatch);
   };
+
+ const users =  useSelector((state) => state.user.users);
+ //console.log(users);
+
+  useEffect(() => {
+    getUsers(dispatch);
+  },[dispatch]);
+
   const columns = [
-    { field: "id", headerName: "ID", width: 90 },
+    { field: "_id", headerName: "ID", width: 220 },
     {
       field: "userName",
       headerName: "User Name",
@@ -23,11 +34,6 @@ const UserList = () => {
       renderCell: (params) => {
         return (
           <div className={classes.userListUser}>
-            <img
-              className={classes.userListImage}
-              src={params.row.avatar}
-              alt=""
-            />
             {params.row.userName}
           </div>
         );
@@ -40,15 +46,9 @@ const UserList = () => {
       editable: true,
     },
     {
-      field: "status",
-      headerName: "Status",
+      field: "isAdmin",
+      headerName: "Admin",
       width: 150,
-      editable: true,
-    },
-    {
-      field: "transition",
-      headerName: "Transition",
-      width: 160,
       editable: true,
     },
     {
@@ -56,14 +56,15 @@ const UserList = () => {
       headerName: "Action",
       width: 160,
       renderCell: (params) => {
+         // console.log(params);
         return (
           <>
-            <Link to={`/user/${params.row.id}`}>
+            <Link to={`/user/${params.row._id}`}>
               <button className={classes.userListEdit}>Edit</button>
             </Link>
             <DeleteOutline
               className={classes.userListDelete}
-              onClick={() => handleDelete(params.row.id)}
+              onClick={() => handleDelete(params.row._id)}
             >
               Delete
             </DeleteOutline>
@@ -80,9 +81,10 @@ const UserList = () => {
         <Sidebar />
         <div className={classes.userList}>
           <DataGrid
-            rows={data}
+            rows={users}
             columns={columns}
             pageSize={8}
+            getRowId={(row) => row._id}
             checkboxSelection
             disableSelectionOnClick
           />

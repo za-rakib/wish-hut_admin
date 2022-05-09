@@ -3,7 +3,6 @@ import { DataGrid } from "@material-ui/data-grid";
 import { DeleteOutline } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
-
 import TopBar from "../../components/Topbar/TopBar";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,6 +10,7 @@ import { deleteProduct, getProducts } from "../../redux/apiCalls";
 
 export default function ProductList() {
   const dispatch = useDispatch();
+  
   const products = useSelector((state) => state.product.products);
   //console.log(product);
 
@@ -49,10 +49,10 @@ export default function ProductList() {
       headerName: "Action",
       width: 150,
       renderCell: (params) => {
-       // console.log(params.id);
+       // console.log("params",params);
         return (
           <>
-            <Link to={`/product/${params.id}`}>
+            <Link to={`/product/${params.row._id}`}>
               <button className="productListEdit">Edit</button>
             </Link>
             <DeleteOutline

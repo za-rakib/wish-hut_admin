@@ -3,7 +3,7 @@ import Home from "./page/Home/Home";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import UserList from "./page/UserList/UserList";
 import User from "./page/User/User";
-import NewUser from "./page/NewUser/NewUser";
+import NewAdmin  from "./page/NewAdmin/NewAdmin";
 import ProductList from "./page/ProductList/ProductList";
 import Product from "./page/Product/Product";
 import NewProduct from "./page/NewProduct/NewProduct";
@@ -53,8 +53,8 @@ function App() {
           element={admin ? <User /> : <Navigate to="/login" />}
         ></Route>
         <Route
-          path="newUser"
-          element={admin ? <NewUser /> : <Navigate to="/login" />}
+          path="newAdmin"
+          element={admin ? <NewAdmin /> : <Navigate to="/login" />}
         ></Route>
         <Route
           path="products"

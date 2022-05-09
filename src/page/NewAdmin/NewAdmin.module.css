@@ -1,14 +1,15 @@
 .newUserMain {
   display: flex;
   flex-direction: wrap;
+
 }
 .newUser {
   flex: 4;
 }
 
 .newUserForm {
-  display: flex;
   flex-wrap: wrap;
+  margin: 20px 0 0 20px;
 }
 
 .newUserItem {
@@ -23,12 +24,12 @@
   margin-bottom: 10px;
   font-size: 14px;
   font-weight: 600;
-  color: rgb(151, 150, 150);
+  color: rgb(41, 41, 41);
 }
 
 .newUserItem > input {
   height: 20px;
-  padding: 10px;
+  padding: 15px;
   border: 1px solid gray;
   border-radius: 5px;
 }
@@ -49,7 +50,7 @@
 }
 
 .newUserButton {
-  width: 200px;
+  width: 150px;
   border: none;
   background-color: darkblue;
   color: white;

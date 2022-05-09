@@ -26,8 +26,8 @@ export default function Product() {
   const product = useSelector((state) =>
     state.product.products.find((product) => product._id === productId)
   );
-  const [input, setInput] = useState({product});
-  const [file, setFile] = useState(product.img);
+  const [input, setInput] = useState({ product });
+  const [file, setFile] = useState(null);
 
   const MONTH = useMemo(
     () => [
@@ -46,6 +46,7 @@ export default function Product() {
     ],
     []
   );
+
   useEffect(() => {
     const getStats = async () => {
       try {
@@ -75,41 +76,45 @@ export default function Product() {
   const handleClick = (e) => {
     e.preventDefault();
 
-    const fileName = new Date().getTime() + file.name;
-    const storage = getStorage(app);
-    const storageRef = ref(storage, fileName);
+    if (file) {
+      const fileName = new Date().getTime() + file?.name;
+      const storage = getStorage(app);
+      const storageRef = ref(storage, fileName);
 
-    const uploadTask = uploadBytesResumable(storageRef, file);
+      const uploadTask = uploadBytesResumable(storageRef, file);
 
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log("Upload is " + progress + "% done");
-        switch (snapshot.state) {
-          case "paused":
-            console.log("Upload is paused");
-            break;
-          case "running":
-            console.log("Upload is running");
-            break;
-          default:
-        }
-      },
-      (error) => {
-        console.log(error);
-      },
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref)
-          .then((downloadURL) => {
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log("Upload is " + progress + "% done");
+          switch (snapshot.state) {
+            case "paused":
+              console.log("Upload is paused");
+              break;
+            case "running":
+              console.log("Upload is running");
+              break;
+            default:
+          }
+        },
+        (error) => {
+          console.log(error);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             const product = { ...input, img: downloadURL };
             updatedProduct(product, productId, dispatch);
-          })
-      }
-    );
+          });
+        }
+      );
+    } else {
+      const product = { ...input };
+      updatedProduct(product, productId, dispatch);
+    }
   };
-  //   console.log(input);
+  //  console.log(product);
   //   console.log("file", file);
 
   return (
@@ -145,7 +150,7 @@ export default function Product() {
                 </div>
                 <div className="productInfoItem">
                   <span className="productInfoKey">sales:</span>
-                  <span className="productInfoValue">5123</span>
+                  <span className="productInfoValue">512</span>
                 </div>
                 <div className="productInfoItem">
                   <span className="productInfoKey">in stock:</span>
@@ -193,6 +198,7 @@ export default function Product() {
                   <label htmlFor="file">
                     <Publish />
                   </label>
+
                   <input
                     type="file"
                     id="file"
