@@ -118,7 +118,7 @@ export default function NewProduct() {
               <input
                 name="categories"
                 type="text"
-                placeholder="T-shirt, Bag"
+                placeholder="Women, Men, Kids"
                 onChange={handleArrayInput}
               />
             </div>

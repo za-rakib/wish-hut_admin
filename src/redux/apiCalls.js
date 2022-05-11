@@ -27,6 +27,7 @@ import {
   deleteUserSuccess,
   deleteUserFailure,
 } from "./userRedux";
+
 //register
 export const register = async (dispatch, user) => {
   dispatch(registerStart());
@@ -117,6 +118,9 @@ export const addProduct = async (product, dispatch) => {
   dispatch(addProductStart());
   try {
     const res = await userRequest.post(`/products/`, product);
+    if (res.data) {
+      alert("Product added successfully");
+    }
     dispatch(addProductSuccess(res.data));
   } catch (error) {
     dispatch(addProductFailure());
